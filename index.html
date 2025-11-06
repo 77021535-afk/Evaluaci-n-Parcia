@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Librería Paquito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #1a5276;
+            --accent: #2980b9;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --success: #27ae60;
+            --warning: #e67e22;
+            --danger: #c0392b;
+            --python: #3776ab;
+            --sql: #cc2927;
+            --tkinter: #2c5f8a;
+            --university: #1f4788;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--university) 0%, var(--primary) 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--success), var(--warning));
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 1000px;
+            margin: 0 auto 25px;
+        }
+        
+        .university-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            margin: 15px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tech-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin: 8px 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border-top: 6px solid var(--accent);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+        }
+        
+        .card h2 i {
+            margin-right: 15px;
+            color: var(--accent);
+            width: 40px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .card-content {
+            flex-grow: 1;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .feature-list li:before {
+            content: "▸";
+            color: var(--success);
+            font-weight: bold;
+            position: absolute;
+            left: 15px;
+            background: rgba(39, 174, 96, 0.1);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 1.1rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .tech-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .architecture {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 5px solid var(--accent);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .code-sample {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-left: 4px solid var(--success);
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(41, 128, 185, 0.15) 0%, rgba(41, 128, 185, 0.05) 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--secondary);
+            border: 1px solid rgba(41, 128, 185, 0.2);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            margin: 20px auto;
+            border-radius: 3px;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--success);
+            transition: transform 0.3s ease;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .module-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+        
+        .module-card h3 i {
+            margin-right: 12px;
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+        
+        .team-section {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .team-member:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-member h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .team-member .role {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #2ecc71);
+            border-radius: 5px;
+            width: 100%;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: var(--dark);
+            font-size: 1rem;
+            border-top: 2px solid #ddd;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .requirement-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #eee;
+        }
+        
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.3rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏪 Sistema de Gestión Integral</h1>
+            <p>Librería Paquito - Plataforma de Ventas e Inventario</p>
+            <div class="university-badge">
+                Universidad Continental - Facultad de Ingeniería - Escuela de Ingeniería de Sistemas
+            </div>
+            <div>
+                <span class="tech-badge">Python 3.x</span>
+                <span class="tech-badge">Tkinter GUI</span>
+                <span class="tech-badge">SQL Server</span>
+                <span class="tech-badge">PyODBC</span>
+                <span class="tech-badge">CRUD Completo</span>
+                <span class="tech-badge">Sistema en Producción</span>
+            </div>
+        </div>
+        
+        <h2 class="section-title">🏢 Contexto del Proyecto</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-bullseye"></i> Objetivo Principal</h2>
+                <div class="card-content">
+                    <p>Optimizar y gestionar el sistema de ventas e inventario de la <span class="highlight">"Librería Paquito"</span> mediante una solución tecnológica integral que permita una administración eficiente y organizada de la información.</p>
+                    <div class="architecture">
+                        <p><strong>🎯 Alcance:</strong> Registro de ventas diarias, control de inventario en tiempo real, generación de reportes detallados y análisis de datos para la toma de decisiones estratégicas.</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>Gestión centralizada</strong> de todas las operaciones comerciales</li>
+                        <li><strong>Automatización de procesos</strong> manuales repetitivos</li>
+                        <li><strong>Reportes en tiempo real</strong> para análisis inmediato</li>
+                        <li><strong>Interfaz intuitiva</strong> para usuarios no técnicos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-building"></i> Empresa - Librería Paquito</h2>
+                <div class="card-content">
+                    <div class="architecture">
+                        <p><strong>📊 Rubro:</strong> Venta de artículos para estudiantes universitarios</p>
+                        <p><strong>📍 Ubicación:</strong> Al costado de la Universidad Continental - Sede Cusco</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>Misión:</strong> "Brindar a los estudiantes de la Universidad Continental y al público en general acceso a útiles escolares y de oficina de calidad, a un precio justo, contribuyendo a su desarrollo académico"</li>
+                        <li><strong>Visión:</strong> "Ser reconocidos como la librería preferida por los estudiantes universitarios del distrito de San Jerónimo por nuestra atención personalizada, compromiso con la educación y precios accesibles"</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-item">Estudiantes Universitarios</span>
+                        <span class="tech-item">Útiles Escolares</span>
+                        <span class="tech-item">Material de Oficina</span>
+                        <span class="tech-item">Precios Accesibles</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🚀 Funcionalidades del Prototipo</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-users"></i> Módulo de Clientes</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Registro completo</strong> con validación de datos integrada</li>
+                        <li><strong>Validación de DNI</strong> (8 dígitos numéricos obligatorios)</li>
+                        <li><strong>Búsqueda y filtrado</strong> avanzado en tiempo real</li>
+                        <li><strong>Edición en línea</strong> con selección directa de registros</li>
+                        <li><strong>Eliminación segura</strong> con verificación de relaciones en BD</li>
+                        <li><strong>Campos opcionales inteligentes:</strong> teléfono, correo, dirección</li>
+                        <li><strong>Formateo automático</strong> de nombres y apellidos</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>📊 Operaciones CRUD Completas:</strong>
+                        <p>Create → Agregar cliente | Read → Consultar/Listar | Update → Modificar datos | Delete → Eliminar con validación</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-boxes"></i> Módulo de Productos</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Gestión completa</strong> de inventario con control de stock</li>
+                        <li><strong>Validación de precios</strong> y cantidades (números positivos)</li>
+                        <li><strong>Categorización flexible</strong> y organización por marcas</li>
+                        <li><strong>Alertas automáticas</strong> de stock bajo (< 10 unidades)</li>
+                        <li><strong>Búsqueda avanzada</strong> por múltiples criterios</li>
+                        <li><strong>Actualización masiva</strong> de precios y existencias</li>
+                        <li><strong>Prevención de duplicados</strong> en el sistema</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>🛡️ Validaciones Robusta:</strong>
+                        <p>Precio > 0 | Stock ≥ 0 | Campos obligatorios | Prevención de duplicados | Integridad referencial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-shopping-cart"></i> Módulo de Ventas</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Registro completo</strong> de ventas con cliente asociado</li>
+                        <li><strong>Cálculo automático</strong> de totales y subtotales</li>
+                        <li><strong>Historial detallado</strong> con fechas y montos</li>
+                        <li><strong>Integración con clientes</strong> mediante combobox dinámico</li>
+                        <li><strong>Ventas anónimas</strong> (opción "Sin cliente") para walk-ins</li>
+                        <li><strong>Búsqueda por fecha</strong> y filtrado por cliente específico</li>
+                        <li><strong>Exportación de reportes</strong> en formato legible</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>💾 Persistencia Avanzada:</strong>
+                        <p>Registro en base de datos SQL Server | Transacciones ACID | Integridad referencial | Backup automático</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-clipboard-list"></i> Módulo de Pedidos</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Creación de pedidos</strong> con múltiples productos simultáneos</li>
+                        <li><strong>Cálculo automático</strong> de subtotales y total general</li>
+                        <li><strong>Control de stock en tiempo real</strong> durante la creación</li>
+                        <li><strong>Selección de cliente</strong> opcional con combobox</li>
+                        <li><strong>Visualización de detalle</strong> completo del pedido</li>
+                        <li><strong>Gestión de cantidades</strong> con validación de existencias</li>
+                        <li><strong>Historial de pedidos</strong> con estados y seguimiento</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>🔧 Funcionalidad Avanzada:</strong>
+                        <p>Carrito de compras dinámico | Actualización en tiempo real | Relaciones Many-to-Many | Gestión de relaciones complejas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">⚙️ Arquitectura Técnica</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-laptop-code"></i> Stack Tecnológico</h2>
+                <div class="card-content">
+                    <div class="tech-stack">
+                        <span class="tech-item">Python 3.8+</span>
+                        <span class="tech-item">Tkinter GUI</span>
+                        <span class="tech-item">SQL Server</span>
+                        <span class="tech-item">PyODBC Driver</span>
+                        <span class="tech-item">CRUD Operations</span>
+                        <span class="tech-item">MVC Pattern</span>
+                        <span class="tech-item">GitHub</span>
+                        <span class="tech-item">Visual Studio 2022</span>
+                    </div>
+                    
+                    <div class="architecture">
+                        <strong>🔗 Conexión a Base de Datos SQL Server:</strong>
+                        <div class="code-sample">
+                            # Configuración optimizada de conexión<br>
+                            def conectar_bd():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conexion = pyodbc.connect(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DRIVER={SQL Server};'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SERVER=localhost;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DATABASE=tiendas;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Trusted_Connection=yes;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return conexion<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;except Exception as e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messagebox.showerror("Error", f"Conexión fallida:\n{e}")
+                        </div>
+                    </div>
+                    
+                    <ul class="feature-list">
+                        <li><strong>Interfaz intuitiva</strong> con sistema de pestañas organizadas</li>
+                        <li><strong>Validación robusta</strong> de todos los datos de entrada</li>
+                        <li><strong>Manejo de errores</strong> con mensajes claros al usuario</li>
+                        <li><strong>Actualización en tiempo real</strong> de todas las interfaces</li>
+                        <li><strong>Backup automático</strong> y sistema de recuperación</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-bar"></i> Módulo de Reportes & Analytics</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Reporte general consolidado</strong> de ventas y pedidos</li>
+                        <li><strong>Top 5 productos</strong> más vendidos con métricas</li>
+                        <li><strong>Clientes más frecuentes</strong> con estadísticas detalladas</li>
+                        <li><strong>Alertas proactivas</strong> de inventario bajo</li>
+                        <li><strong>Métricas financieras</strong> (totales, promedios, tendencias)</li>
+                        <li><strong>Visualización de datos</strong> en formato claro y legible</li>
+                        <li><strong>Exportación lista</strong> para presentaciones ejecutivas</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>📈 Business Intelligence:</strong>
+                        <p>KPIs de negocio en tiempo real | Tendencias de venta | Comportamiento de clientes | Análisis predictivo básico</p>
+                    </div>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-item">Reportes Automatizados</span>
+                        <span class="tech-item">Análisis de Datos</span>
+                        <span class="tech-item">Métricas KPI</span>
+                        <span class="tech-item">Business Intelligence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🛡️ Requisitos del Sistema</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-user-tie"></i> Usuarios del Sistema</h2>
+                <div class="card-content">
+                    <div class="requirement-item">
+                        <h3>👑 Gerente/Administrador</h3>
+                        <p>Control total del sistema con acceso completo a operaciones CRUD, generación de reportes avanzados, configuración del sistema y acceso a todas las funcionalidades.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>👨‍💼 Trabajador/Vendedor</h3>
+                        <p>Capacidad para registrar ventas, consultar inventario, actualizar información básica de productos y gestionar pedidos básicos.</p>
+                    </div>
+                    
+                    <div class="architecture">
+                        <strong>🔐 Control de Accesos:</strong>
+                        <p>Diferentes niveles de permisos | Operaciones segmentadas | Validación de acciones | Auditoría de actividades</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-sliders-h"></i> Requisitos No Funcionales</h2>
+                <div class="card-content">
+                    <div class="requirement-item">
+                        <h3>🔒 Seguridad</h3>
+                        <p>Copias de respaldo automáticas, autenticación de usuarios, protección de datos sensibles, prevención de pérdida de información.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>⚡ Rendimiento</h3>
+                        <p>Operaciones de consulta, registro y actualización en <span class="highlight">menos de 3 segundos</span>. Garantiza fluidez en la atención al cliente.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>💡 Usabilidad</h3>
+                        <p>Interfaz intuitiva que no requiere conocimientos técnicos avanzados para su operación. Curva de aprendizaje mínima.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">👥 Equipo de Desarrollo</h2>
+        
+        <div class="team-section">
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>Manya Carreño, Neil Steve</h3>
+                    <p class="role">Scrum Master & Desarrollador Backend</p>
+                    <p>Especializado en Python y conexión a bases de datos</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Gutierrez Ruiz, Diego Isaías</h3>
+                    <p class="role">Desarrollador Full Stack</p>
+                    <p>Experto en SQL Server y lógica de negocio</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Pastor Quispe, Oscar Jhosue</h3>
+                    <p class="role">Desarrollador Python</p>
+                    <p>Enfocado en funcionalidades de ventas e inventario</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Quispirroca Bejarano, Joaquín Alessandro</h3>
+                    <p class="role">Desarrollador Base de Datos</p>
+                    <p>Diseño e implementación de la estructura de datos</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Universidad Continental</strong> - Facultad de Ingeniería - Escuela Profesional de Ingeniería de Sistemas</p>
+            <p>Cusco – Perú, 2025 - "Año de la Recuperación y Consolidación de la Economía Peruana"</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                Proyecto: "Un sistema de información para la Gestión de ventas e inventario de la librería Paquito" | 
+                Equipo: DISEÑO PACHAMAMICO
+            </p>
+            <div style="margin-top: 15px;">
+                <span class="tech-badge" style="background: var(--python);">SQL SERVER</span>
+                <span class="tech-badge" style="background: var(--sql);">Base de datos</span>
+                <span class="tech-badge" style="background: var(--accent);">Deep Seek</span>
+                <span class="tech-badge" style="background: var(--success);">HTML</span>
+                <span class="tech-badge" style="background: var(--warning);">Python</span>
+                <span class="tech-badge" style="background: var(--primary);">GitHub</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión - Librería Paquito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #1a5276;
+            --accent: #2980b9;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --success: #27ae60;
+            --warning: #e67e22;
+            --danger: #c0392b;
+            --python: #3776ab;
+            --sql: #cc2927;
+            --tkinter: #2c5f8a;
+            --university: #1f4788;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--university) 0%, var(--primary) 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--success), var(--warning));
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 1000px;
+            margin: 0 auto 25px;
+        }
+        
+        .university-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            margin: 15px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tech-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin: 8px 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border-top: 6px solid var(--accent);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+        }
+        
+        .card h2 i {
+            margin-right: 15px;
+            color: var(--accent);
+            width: 40px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .card-content {
+            flex-grow: 1;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .feature-list li {
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .feature-list li:before {
+            content: "▸";
+            color: var(--success);
+            font-weight: bold;
+            position: absolute;
+            left: 15px;
+            background: rgba(39, 174, 96, 0.1);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 1.1rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .tech-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .architecture {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 5px solid var(--accent);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .code-sample {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-left: 4px solid var(--success);
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(41, 128, 185, 0.15) 0%, rgba(41, 128, 185, 0.05) 100%);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--secondary);
+            border: 1px solid rgba(41, 128, 185, 0.2);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            margin: 20px auto;
+            border-radius: 3px;
+        }
+        
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--success);
+            transition: transform 0.3s ease;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .module-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+        
+        .module-card h3 i {
+            margin-right: 12px;
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+        
+        .team-section {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .team-member:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-member h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .team-member .role {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #2ecc71);
+            border-radius: 5px;
+            width: 100%;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: var(--dark);
+            font-size: 1rem;
+            border-top: 2px solid #ddd;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .requirement-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #eee;
+        }
+        
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.3rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏪 Sistema de Gestión Integral</h1>
+            <p>Librería Paquito - Plataforma de Ventas e Inventario</p>
+            <div class="university-badge">
+                Universidad Continental - Facultad de Ingeniería - Escuela de Ingeniería de Sistemas
+            </div>
+            <div>
+                <span class="tech-badge">Python 3.x</span>
+                <span class="tech-badge">Tkinter GUI</span>
+                <span class="tech-badge">SQL Server</span>
+                <span class="tech-badge">PyODBC</span>
+                <span class="tech-badge">CRUD Completo</span>
+                <span class="tech-badge">Sistema en Producción</span>
+            </div>
+        </div>
+        
+        <h2 class="section-title">🏢 Contexto del Proyecto</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-bullseye"></i> Objetivo Principal</h2>
+                <div class="card-content">
+                    <p>Optimizar y gestionar el sistema de ventas e inventario de la <span class="highlight">"Librería Paquito"</span> mediante una solución tecnológica integral que permita una administración eficiente y organizada de la información.</p>
+                    <div class="architecture">
+                        <p><strong>🎯 Alcance:</strong> Registro de ventas diarias, control de inventario en tiempo real, generación de reportes detallados y análisis de datos para la toma de decisiones estratégicas.</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>Gestión centralizada</strong> de todas las operaciones comerciales</li>
+                        <li><strong>Automatización de procesos</strong> manuales repetitivos</li>
+                        <li><strong>Reportes en tiempo real</strong> para análisis inmediato</li>
+                        <li><strong>Interfaz intuitiva</strong> para usuarios no técnicos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-building"></i> Empresa - Librería Paquito</h2>
+                <div class="card-content">
+                    <div class="architecture">
+                        <p><strong>📊 Rubro:</strong> Venta de artículos para estudiantes universitarios</p>
+                        <p><strong>📍 Ubicación:</strong> Al costado de la Universidad Continental - Sede Cusco</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li><strong>Misión:</strong> "Brindar a los estudiantes de la Universidad Continental y al público en general acceso a útiles escolares y de oficina de calidad, a un precio justo, contribuyendo a su desarrollo académico"</li>
+                        <li><strong>Visión:</strong> "Ser reconocidos como la librería preferida por los estudiantes universitarios del distrito de San Jerónimo por nuestra atención personalizada, compromiso con la educación y precios accesibles"</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-item">Estudiantes Universitarios</span>
+                        <span class="tech-item">Útiles Escolares</span>
+                        <span class="tech-item">Material de Oficina</span>
+                        <span class="tech-item">Precios Accesibles</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🚀 Funcionalidades del Prototipo</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-users"></i> Módulo de Clientes</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Registro completo</strong> con validación de datos integrada</li>
+                        <li><strong>Validación de DNI</strong> (8 dígitos numéricos obligatorios)</li>
+                        <li><strong>Búsqueda y filtrado</strong> avanzado en tiempo real</li>
+                        <li><strong>Edición en línea</strong> con selección directa de registros</li>
+                        <li><strong>Eliminación segura</strong> con verificación de relaciones en BD</li>
+                        <li><strong>Campos opcionales inteligentes:</strong> teléfono, correo, dirección</li>
+                        <li><strong>Formateo automático</strong> de nombres y apellidos</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>📊 Operaciones CRUD Completas:</strong>
+                        <p>Create → Agregar cliente | Read → Consultar/Listar | Update → Modificar datos | Delete → Eliminar con validación</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-boxes"></i> Módulo de Productos</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Gestión completa</strong> de inventario con control de stock</li>
+                        <li><strong>Validación de precios</strong> y cantidades (números positivos)</li>
+                        <li><strong>Categorización flexible</strong> y organización por marcas</li>
+                        <li><strong>Alertas automáticas</strong> de stock bajo (< 10 unidades)</li>
+                        <li><strong>Búsqueda avanzada</strong> por múltiples criterios</li>
+                        <li><strong>Actualización masiva</strong> de precios y existencias</li>
+                        <li><strong>Prevención de duplicados</strong> en el sistema</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>🛡️ Validaciones Robusta:</strong>
+                        <p>Precio > 0 | Stock ≥ 0 | Campos obligatorios | Prevención de duplicados | Integridad referencial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-shopping-cart"></i> Módulo de Ventas</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Registro completo</strong> de ventas con cliente asociado</li>
+                        <li><strong>Cálculo automático</strong> de totales y subtotales</li>
+                        <li><strong>Historial detallado</strong> con fechas y montos</li>
+                        <li><strong>Integración con clientes</strong> mediante combobox dinámico</li>
+                        <li><strong>Ventas anónimas</strong> (opción "Sin cliente") para walk-ins</li>
+                        <li><strong>Búsqueda por fecha</strong> y filtrado por cliente específico</li>
+                        <li><strong>Exportación de reportes</strong> en formato legible</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>💾 Persistencia Avanzada:</strong>
+                        <p>Registro en base de datos SQL Server | Transacciones ACID | Integridad referencial | Backup automático</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-clipboard-list"></i> Módulo de Pedidos</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Creación de pedidos</strong> con múltiples productos simultáneos</li>
+                        <li><strong>Cálculo automático</strong> de subtotales y total general</li>
+                        <li><strong>Control de stock en tiempo real</strong> durante la creación</li>
+                        <li><strong>Selección de cliente</strong> opcional con combobox</li>
+                        <li><strong>Visualización de detalle</strong> completo del pedido</li>
+                        <li><strong>Gestión de cantidades</strong> con validación de existencias</li>
+                        <li><strong>Historial de pedidos</strong> con estados y seguimiento</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>🔧 Funcionalidad Avanzada:</strong>
+                        <p>Carrito de compras dinámico | Actualización en tiempo real | Relaciones Many-to-Many | Gestión de relaciones complejas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">⚙️ Arquitectura Técnica</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-laptop-code"></i> Stack Tecnológico</h2>
+                <div class="card-content">
+                    <div class="tech-stack">
+                        <span class="tech-item">Python 3.8+</span>
+                        <span class="tech-item">Tkinter GUI</span>
+                        <span class="tech-item">SQL Server</span>
+                        <span class="tech-item">PyODBC Driver</span>
+                        <span class="tech-item">CRUD Operations</span>
+                        <span class="tech-item">MVC Pattern</span>
+                        <span class="tech-item">GitHub</span>
+                        <span class="tech-item">Visual Studio 2022</span>
+                    </div>
+                    
+                    <div class="architecture">
+                        <strong>🔗 Conexión a Base de Datos SQL Server:</strong>
+                        <div class="code-sample">
+                            # Configuración optimizada de conexión<br>
+                            def conectar_bd():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conexion = pyodbc.connect(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DRIVER={SQL Server};'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SERVER=localhost;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'DATABASE=tiendas;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Trusted_Connection=yes;'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return conexion<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;except Exception as e:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;messagebox.showerror("Error", f"Conexión fallida:\n{e}")
+                        </div>
+                    </div>
+                    
+                    <ul class="feature-list">
+                        <li><strong>Interfaz intuitiva</strong> con sistema de pestañas organizadas</li>
+                        <li><strong>Validación robusta</strong> de todos los datos de entrada</li>
+                        <li><strong>Manejo de errores</strong> con mensajes claros al usuario</li>
+                        <li><strong>Actualización en tiempo real</strong> de todas las interfaces</li>
+                        <li><strong>Backup automático</strong> y sistema de recuperación</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-chart-bar"></i> Módulo de Reportes & Analytics</h2>
+                <div class="card-content">
+                    <ul class="feature-list">
+                        <li><strong>Reporte general consolidado</strong> de ventas y pedidos</li>
+                        <li><strong>Top 5 productos</strong> más vendidos con métricas</li>
+                        <li><strong>Clientes más frecuentes</strong> con estadísticas detalladas</li>
+                        <li><strong>Alertas proactivas</strong> de inventario bajo</li>
+                        <li><strong>Métricas financieras</strong> (totales, promedios, tendencias)</li>
+                        <li><strong>Visualización de datos</strong> en formato claro y legible</li>
+                        <li><strong>Exportación lista</strong> para presentaciones ejecutivas</li>
+                    </ul>
+                    <div class="architecture">
+                        <strong>📈 Business Intelligence:</strong>
+                        <p>KPIs de negocio en tiempo real | Tendencias de venta | Comportamiento de clientes | Análisis predictivo básico</p>
+                    </div>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-item">Reportes Automatizados</span>
+                        <span class="tech-item">Análisis de Datos</span>
+                        <span class="tech-item">Métricas KPI</span>
+                        <span class="tech-item">Business Intelligence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🛡️ Requisitos del Sistema</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <h2><i class="fas fa-user-tie"></i> Usuarios del Sistema</h2>
+                <div class="card-content">
+                    <div class="requirement-item">
+                        <h3>👑 Gerente/Administrador</h3>
+                        <p>Control total del sistema con acceso completo a operaciones CRUD, generación de reportes avanzados, configuración del sistema y acceso a todas las funcionalidades.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>👨‍💼 Trabajador/Vendedor</h3>
+                        <p>Capacidad para registrar ventas, consultar inventario, actualizar información básica de productos y gestionar pedidos básicos.</p>
+                    </div>
+                    
+                    <div class="architecture">
+                        <strong>🔐 Control de Accesos:</strong>
+                        <p>Diferentes niveles de permisos | Operaciones segmentadas | Validación de acciones | Auditoría de actividades</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-sliders-h"></i> Requisitos No Funcionales</h2>
+                <div class="card-content">
+                    <div class="requirement-item">
+                        <h3>🔒 Seguridad</h3>
+                        <p>Copias de respaldo automáticas, autenticación de usuarios, protección de datos sensibles, prevención de pérdida de información.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>⚡ Rendimiento</h3>
+                        <p>Operaciones de consulta, registro y actualización en <span class="highlight">menos de 3 segundos</span>. Garantiza fluidez en la atención al cliente.</p>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <h3>💡 Usabilidad</h3>
+                        <p>Interfaz intuitiva que no requiere conocimientos técnicos avanzados para su operación. Curva de aprendizaje mínima.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">👥 Equipo de Desarrollo</h2>
+        
+        <div class="team-section">
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>Manya Carreño, Neil Steve</h3>
+                    <p class="role">Scrum Master & Desarrollador Backend</p>
+                    <p>Especializado en Python y conexión a bases de datos</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Gutierrez Ruiz, Diego Isaías</h3>
+                    <p class="role">Desarrollador Full Stack</p>
+                    <p>Experto en SQL Server y lógica de negocio</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Pastor Quispe, Oscar Jhosue</h3>
+                    <p class="role">Desarrollador Python</p>
+                    <p>Enfocado en funcionalidades de ventas e inventario</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+                <div class="team-member">
+                    <h3>Quispirroca Bejarano, Joaquín Alessandro</h3>
+                    <p class="role">Desarrollador Base de Datos</p>
+                    <p>Diseño e implementación de la estructura de datos</p>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                    <p><strong>Contribución: 100%</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Universidad Continental</strong> - Facultad de Ingeniería - Escuela Profesional de Ingeniería de Sistemas</p>
+            <p>Cusco – Perú, 2025 - "Año de la Recuperación y Consolidación de la Economía Peruana"</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                Proyecto: "Un sistema de información para la Gestión de ventas e inventario de la librería Paquito" | 
+                Equipo: DISEÑO PACHAMAMICO
+            </p>
+            <div style="margin-top: 15px;">
+                <span class="tech-badge" style="background: var(--python);">SQL SERVER</span>
+                <span class="tech-badge" style="background: var(--sql);">Base de datos</span>
+                <span class="tech-badge" style="background: var(--accent);">Deep Seek</span>
+                <span class="tech-badge" style="background: var(--success);">HTML</span>
+                <span class="tech-badge" style="background: var(--warning);">Python</span>
+                <span class="tech-badge" style="background: var(--primary);">GitHub</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
